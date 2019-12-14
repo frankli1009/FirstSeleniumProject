@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenQA.Selenium;
 
-namespace FirstSeleniumProject
+namespace FirstSeleniumProject.Pages
 {
     public class LoginPage
     {
@@ -11,18 +11,16 @@ namespace FirstSeleniumProject
         }
 
         //Web driver
-        private IWebDriver _driver;
+        protected IWebDriver _driver;
 
         //CSS selection / XPath
-        private string _emailId = "Email";
-        private string _passwordName = "Password";
-        private string _loginButtonTagValue = "input[value='Log in']";
-        private string _errorInfoTagClass = "div.validation-summary-errors ul li";
+        protected string _emailId = "Email";
+        protected string _passwordName = "Password";
+        protected string _loginButtonTagValue = "input[value='Log in']";
 
-        private string _emailPath = "//*[@id='Email']";
-        private string _passwordPath = "//*[@name='Password']";
-        private string _loginButtonPath = "//*[@value='Log in']";
-        private string _errorInfoPath = "//div[contains(@class, 'validation-summary-errors')]/ul/li";
+        protected string _emailPath = "//*[@id='Email']";
+        protected string _passwordPath = "//*[@name='Password']";
+        protected string _loginButtonPath = "//*[@value='Log in']";
 
         //Methods
         public LoginPage SetEmail(string email)
@@ -61,14 +59,5 @@ namespace FirstSeleniumProject
             return this;
         }
 
-        public bool LoginFailed(string failedMessage)
-        {
-            //Find error info by Tag and Class and child mode
-            IWebElement error_li = _driver.FindElement(By.CssSelector(_errorInfoTagClass));
-            //Find error info by XPath
-            //IWebElement error_li = _driver.FindElement(By.XPath(_errorInfoPath));
-            string error_text = error_li.Text;
-            return error_text.StartsWith(failedMessage, StringComparison.CurrentCulture);
-        }
     }
 }

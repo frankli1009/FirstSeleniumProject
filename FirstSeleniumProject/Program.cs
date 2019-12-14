@@ -2,6 +2,9 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Diagnostics;
+using FirstSeleniumProject.Pages;
+using OpenQA.Selenium.Support.UI;
+using FirstSeleniumProject.Helpers;
 
 namespace FirstSeleniumProject
 {
@@ -9,6 +12,7 @@ namespace FirstSeleniumProject
     {
         static void Main(string[] args)
         {
+            string url = "http://www.runfast.franklidev.com/Account/Login";
             string email = "jerry@franklidev.co.uk";
             string password = "jerry @franklidev.co.uk";
             string failedMessage = "Invalid username or password.";
@@ -16,7 +20,7 @@ namespace FirstSeleniumProject
             IWebDriver driver = new ChromeDriver();
 
             //Navigate to google page
-            driver.Navigate().GoToUrl("http://www.runfast.franklidev.com/Account/Login");
+            driver.Navigate().GoToUrl(url);
 
             //Maximize the window
             driver.Manage().Window.Maximize();
@@ -24,8 +28,13 @@ namespace FirstSeleniumProject
             //Prepare page
             LoginPage loginPage = new LoginPage(driver).SetEmail(email: email).SetPassword(password: password).SubmitForm();
 
-            //Check with the expecation
-            Debug.Assert(loginPage.LoginFailed(failedMessage), "Error: Failed on checking failure of log in");
+            LoginFailedPage loginFailedPage = new LoginFailedPage(driver);
+            if (By.CssSelector(loginFailedPage.ErrorInfoTagClass).WaitElement(driver, throwTimeoutException: false,
+                logError: Console.WriteLine) != null)
+            {
+                //Check with the expecation
+                Debug.Assert(loginFailedPage.LoginFailed(failedMessage), "Error: Failed on checking failure of log in");
+            }
 
             //Close the browser
             driver.Close();
