@@ -33,7 +33,7 @@ namespace FirstSeleniumProject
                 logError: Console.WriteLine) != null)
             {
                 //Check with the expecation
-                Debug.Assert(loginFailedPage.LoginFailed(failedMessage), "Error: Failed on checking failure of log in");
+                Trace.Assert(loginFailedPage.LoginFailed(failedMessage), "Error: Failed on checking failure of log in");
             }
 
             //Close the browser
